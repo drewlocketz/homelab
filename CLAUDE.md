@@ -1,5 +1,14 @@
 # Homelab GitOps Repository
 
+## Agent Instructions
+
+Before doing any work in this repository:
+
+1. Read all files in `docs/` — especially `docs/spec_driven_development.md`
+2. Check `docs/specs/` for an existing spec covering your task
+3. If no spec exists, create one and wait for approval before implementing
+4. Follow the spec exactly; surface anything not covered rather than deciding unilaterally
+
 This is a GitOps repository for managing a k3s homelab cluster using ArgoCD.
 
 ## Repository Structure
