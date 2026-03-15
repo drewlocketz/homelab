@@ -4,10 +4,11 @@
 
 Before doing any work in this repository:
 
-1. Read all files in `docs/` — especially `docs/spec_driven_development.md`
-2. Check `docs/specs/` for an existing spec covering your task
-3. If no spec exists, create one and wait for approval before implementing
-4. Follow the spec exactly; surface anything not covered rather than deciding unilaterally
+1. Read `README.md` for a full overview of the cluster, structure, and workloads
+2. Read `docs/spec_driven_development.md` for how specs are written and used
+3. Check `docs/specs/` for an existing spec covering your task
+4. If no spec exists, create one and wait for approval before implementing
+5. Follow the spec exactly; surface anything not covered rather than deciding unilaterally
 
 This is a GitOps repository for managing a k3s homelab cluster using ArgoCD.
 
