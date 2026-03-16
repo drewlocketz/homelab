@@ -13,34 +13,34 @@ not by running `kubectl apply` manually.
 
 **Author:** Drew Locketz
 **Date:** 2026-03-15
-**Status:** Draft
+**Status:** In Progress
 
 ---
 
 ## Tasks
 
-### Phase 1 — Push repo to GitHub
-- [ ] 1. Create a new GitHub repository (`homelab`)
-- [ ] 2. Add the GitHub remote and push `main`
+### Phase 1 — Configure repo access
+- [x] 1. Generate dedicated SSH key pair for ArgoCD (`~/.ssh/argocd_repo_key`)
+- [x] 2. Add public key to `~/.ssh/authorized_keys` on this machine
+- [x] 3. Register `ssh://drew@10.0.4.37/home/drew/code/homelab` in ArgoCD
 
 ### Phase 2 — Install ArgoCD
-- [ ] 3. Create the `argocd` namespace
-- [ ] 4. Apply the official ArgoCD install manifest
-- [ ] 5. Wait for all ArgoCD pods to reach `Running`
-- [ ] 6. Retrieve the initial admin password
-- [ ] 7. Verify the ArgoCD UI is accessible via port-forward
+- [x] 4. Create the `argocd` namespace
+- [x] 5. Apply the official ArgoCD install manifest
+- [x] 6. Wait for all ArgoCD pods to reach `Running`
+- [x] 7. Retrieve the initial admin password
+- [x] 8. Verify the ArgoCD UI is accessible via port-forward
 
 ### Phase 3 — Scaffold repo structure
-- [ ] 8. Create `clusters/home/root-app.yaml`
-- [ ] 9. Create `clusters/home/infrastructure-app.yaml`
-- [ ] 10. Create `clusters/home/workloads-app.yaml`
-- [ ] 11. Create ArgoCD Application manifests for each infrastructure component (with sync waves)
-- [ ] 12. Create ArgoCD Application manifests for each workload (with sync waves)
-- [ ] 13. Create placeholder manifest directories for each infrastructure component and workload
-- [ ] 14. Commit and push to GitHub
+- [ ] 9. Create `clusters/home/root-app.yaml`
+- [ ] 10. Create `clusters/home/infrastructure-app.yaml`
+- [ ] 11. Create `clusters/home/workloads-app.yaml`
+- [ ] 12. Create ArgoCD Application manifests for each infrastructure component (with sync waves)
+- [ ] 13. Create ArgoCD Application manifests for each workload (with sync waves)
+- [ ] 14. Create placeholder manifest directories for each infrastructure component and workload
+- [ ] 15. Commit
 
 ### Phase 4 — Bootstrap
-- [ ] 15. Configure ArgoCD repo access (deploy key if private repo)
 - [ ] 16. Apply `clusters/home/root-app.yaml` manually — this is the only manual `kubectl apply` after ArgoCD is running
 - [ ] 17. Verify root-app, infrastructure-app, and workloads-app appear in ArgoCD
 - [ ] 18. Verify all child Applications are detected and show `Synced` / `Healthy`
@@ -197,15 +197,17 @@ homelab/
 
 ---
 
-### Decision: Private vs public GitHub repo
+### Decision: Local SSH repo vs GitHub
 
 **Options considered:**
-- Public repo — no auth required for ArgoCD to read it
-- Private repo — requires a deploy key or token configured in ArgoCD
+- GitHub (public or private)
+- Serve repo over SSH from the local machine (`ssh://drew@10.0.4.37/home/drew/code/homelab`)
 
-**Decision:** To be decided by the author. If private, a read-only GitHub deploy key should be added to ArgoCD via the UI or CLI during Phase 4. The token/key should never be committed to this repo.
+**Decision:** Local SSH for now. The repo contains the cluster token in `bootstrap/inventory.yml` which is not yet encrypted. Pushing to GitHub before addressing that would expose the secret. A dedicated SSH key pair (`~/.ssh/argocd_repo_key`) was generated and its public key added to `~/.ssh/authorized_keys` on the local machine. ArgoCD uses the private key to pull from `ssh://drew@10.0.4.37/home/drew/code/homelab`.
 
-**Trade-offs:** Public repos are simpler but expose cluster structure. Private repos require one extra setup step.
+**Migration path:** Once `bootstrap/inventory.yml` secrets are encrypted with ansible-vault, the repo can be pushed to GitHub and the ArgoCD repo URL updated.
+
+**Trade-offs:** The local machine must be reachable from the cluster at all times. If this machine is down, ArgoCD cannot sync. Acceptable for a homelab.
 
 ---
 
