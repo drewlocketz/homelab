@@ -21,11 +21,11 @@ time so it can be managed via ArgoCD later.
 - [x] 1. Add `k3s-io/k3s-ansible` as a git submodule under `bootstrap/k3s-ansible`
 - [x] 2. Create `bootstrap/inventory.yml` with the 3 node IPs
 - [x] 3. Configure k3s settings in `bootstrap/inventory.yml` (disable Traefik, enable embedded etcd via `server_config_yaml`)
-- [ ] 4. Verify SSH access from the control machine to all 3 nodes
-- [ ] 5. Run the Ansible playbook to provision the cluster
-- [ ] 6. Verify all nodes are Ready via `kubectl get nodes`
-- [ ] 7. Verify embedded etcd is healthy via `kubectl get pods -n kube-system`
-- [ ] 8. Verify Traefik is absent from the cluster
+- [x] 4. Verify SSH access from the control machine to all 3 nodes
+- [x] 5. Run the Ansible playbook to provision the cluster
+- [x] 6. Verify all nodes are Ready via `kubectl get nodes`
+- [x] 7. Verify embedded etcd is healthy (built into k3s-server process, confirmed via node roles showing `etcd`)
+- [x] 8. Verify Traefik is absent from the cluster
 - [ ] 9. Verify HA by cordoning one node and confirming the cluster remains operational
 
 ---

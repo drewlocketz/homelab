@@ -150,7 +150,7 @@ docker pull "$ANSIBLE_IMAGE"
 # ── Run playbook ──────────────────────────────────────────────────────────────
 docker run --rm \
   --network host \
-  -v "$K3S_ANSIBLE_DIR:/ansible:ro" \
+  -v "$K3S_ANSIBLE_DIR:/ansible" \
   -v "$INVENTORY:/ansible/inventory.yml:ro" \
   -v "$SSH_KEY:/root/.ssh/ansible_key:ro" \
   -e ANSIBLE_PRIVATE_KEY_FILE=/root/.ssh/ansible_key \
