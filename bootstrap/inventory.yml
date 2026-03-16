@@ -1,0 +1,31 @@
+k3s_cluster:
+  children:
+    server:
+      hosts:
+        # TODO: Replace with your actual node IPs before running
+        192.168.1.10:
+        192.168.1.11:
+        192.168.1.12:
+    agent:
+      hosts:
+        # All nodes are server nodes (HA control plane + worker)
+        # Leave this empty — no dedicated agent-only nodes
+
+  vars:
+    ansible_port: 22
+    ansible_user: drew  # TODO: Replace with the SSH user on your nodes
+    k3s_version: v1.31.12+k3s1
+
+    # TODO: Replace with a strong random token before running
+    # Generate one with: openssl rand -base64 64
+    token: "changeme!"
+
+    api_endpoint: "{{ hostvars[groups['server'][0]]['ansible_host'] | default(groups['server'][0]) }}"
+
+    # k3s server config — written to /etc/rancher/k3s/config.yaml on each server node
+    server_config_yaml: |
+      # Disable Traefik — will be deployed via ArgoCD instead
+      disable:
+        - traefik
+      # Enable embedded etcd for HA (required when running 3 server nodes)
+      cluster-init: true

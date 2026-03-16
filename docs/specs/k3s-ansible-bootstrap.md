@@ -12,15 +12,15 @@ time so it can be managed via ArgoCD later.
 
 **Author:** Drew Locketz
 **Date:** 2026-03-15
-**Status:** Draft
+**Status:** In Progress
 
 ---
 
 ## Tasks
 
-- [ ] 1. Add `k3s-io/k3s-ansible` as a git submodule under `bootstrap/k3s-ansible`
-- [ ] 2. Create `bootstrap/inventory.yml` with the 3 node IPs
-- [ ] 3. Create `bootstrap/group_vars/all.yml` with k3s configuration (disable Traefik, enable embedded etcd)
+- [x] 1. Add `k3s-io/k3s-ansible` as a git submodule under `bootstrap/k3s-ansible`
+- [x] 2. Create `bootstrap/inventory.yml` with the 3 node IPs
+- [x] 3. Configure k3s settings in `bootstrap/inventory.yml` (disable Traefik, enable embedded etcd via `server_config_yaml`)
 - [ ] 4. Verify SSH access from the control machine to all 3 nodes
 - [ ] 5. Run the Ansible playbook to provision the cluster
 - [ ] 6. Verify all nodes are Ready via `kubectl get nodes`
