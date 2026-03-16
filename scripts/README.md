@@ -43,3 +43,35 @@ SSH_KEY=~/.ssh/homelab ./scripts/run-k3s-ansible.sh
 ```bash
 openssl rand -base64 64
 ```
+
+---
+
+## update-kubeconfig.sh
+
+Fetches the kubeconfig from the first reachable k3s server node and installs it
+to `~/.kube/config` with the correct server address. Useful after cluster provisioning
+or if your kubeconfig becomes stale.
+
+**Prerequisites:**
+- `kubectl` installed and in PATH
+- SSH key copied to each node
+
+**Usage:**
+
+```bash
+# Fetch kubeconfig from first reachable node
+./scripts/update-kubeconfig.sh
+
+# Use a custom SSH key
+SSH_KEY=~/.ssh/homelab ./scripts/update-kubeconfig.sh
+
+# Write to a custom kubeconfig path
+KUBECONFIG=~/.kube/homelab.yaml ./scripts/update-kubeconfig.sh
+```
+
+**What it does:**
+1. Verifies `kubectl` is installed — exits with an error and install instructions if not
+2. Iterates through server nodes in `bootstrap/inventory.yml` and connects to the first reachable one
+3. Fetches `/etc/rancher/k3s/k3s.yaml` and rewrites `127.0.0.1` to the node's actual IP
+4. Writes the result to `~/.kube/config` with correct permissions (`600`)
+5. Runs `kubectl get nodes` to confirm access
