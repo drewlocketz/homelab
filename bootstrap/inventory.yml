@@ -12,12 +12,10 @@ k3s_cluster:
 
   vars:
     ansible_port: 22
-    ansible_user: drew  # TODO: Replace with the SSH user on your nodes
+    ansible_user: drew
     k3s_version: v1.31.12+k3s1
 
-    # TODO: Replace with a strong random token before running
-    # Generate one with: openssl rand -base64 64
-    token: "changeme!"
+    token: "e40IXNA4VnZlV7wyx8puOG8k3h4PtuBAgH5dV/IReYZ1t1Ph+IWQoRYJsRcIZ2x+yElBSOppdYeRyy4tFZTP8Q=="
 
     api_endpoint: "{{ hostvars[groups['server'][0]]['ansible_host'] | default(groups['server'][0]) }}"
 
