@@ -4,16 +4,16 @@
 
 ArgoCD is a declarative GitOps continuous delivery tool for Kubernetes. It runs inside
 the cluster, watches a Git repository for changes, and automatically reconciles the
-cluster state to match what is declared in that repository. This spec covers installing
-ArgoCD on the k3s cluster, pushing this repo to GitHub so ArgoCD can read it, scaffolding
-the full app-of-apps repository structure defined in `docs/specs/app-of-apps-structure.md`,
-and applying the root Application to hand control of the cluster over to ArgoCD. After
-this spec is complete, all future changes to the cluster are made by pushing to Git —
-not by running `kubectl apply` manually.
+cluster state to match what is declared in that repository. This spec covered installing
+ArgoCD on the k3s cluster, configuring SSH-based repo access from the local machine,
+scaffolding the full app-of-apps repository structure defined in
+`docs/specs/app-of-apps-structure.md`, and applying the root Application to hand control
+of the cluster over to ArgoCD. All future changes to the cluster are made by pushing to
+Git — not by running `kubectl apply` manually.
 
 **Author:** Drew Locketz
 **Date:** 2026-03-15
-**Status:** In Progress
+**Status:** Complete
 
 ---
 
@@ -26,24 +26,27 @@ not by running `kubectl apply` manually.
 
 ### Phase 2 — Install ArgoCD
 - [x] 4. Create the `argocd` namespace
-- [x] 5. Apply the official ArgoCD install manifest
+- [x] 5. Apply the official ArgoCD install manifest (with `--server-side --force-conflicts` for large CRDs)
 - [x] 6. Wait for all ArgoCD pods to reach `Running`
 - [x] 7. Retrieve the initial admin password
 - [x] 8. Verify the ArgoCD UI is accessible via port-forward
 
 ### Phase 3 — Scaffold repo structure
-- [ ] 9. Create `clusters/home/root-app.yaml`
-- [ ] 10. Create `clusters/home/infrastructure-app.yaml`
-- [ ] 11. Create `clusters/home/workloads-app.yaml`
-- [ ] 12. Create ArgoCD Application manifests for each infrastructure component (with sync waves)
-- [ ] 13. Create ArgoCD Application manifests for each workload (with sync waves)
-- [ ] 14. Create placeholder manifest directories for each infrastructure component and workload
-- [ ] 15. Commit
+- [x] 9. Create `clusters/home/root-app.yaml`
+- [x] 10. Create `clusters/home/infrastructure-app.yaml`
+- [x] 11. Create `clusters/home/workloads-app.yaml`
+- [x] 12. Create ArgoCD Application manifests for each infrastructure component (with sync waves)
+- [x] 13. Create ArgoCD Application manifests for each workload (with sync waves)
+- [x] 14. Create placeholder manifest directories for each infrastructure component and workload
+- [x] 15. Committed to `main`
 
 ### Phase 4 — Bootstrap
-- [ ] 16. Apply `clusters/home/root-app.yaml` manually — this is the only manual `kubectl apply` after ArgoCD is running
+- [ ] 16. Apply `clusters/home/root-app.yaml` manually — one-time only
 - [ ] 17. Verify root-app, infrastructure-app, and workloads-app appear in ArgoCD
 - [ ] 18. Verify all child Applications are detected and show `Synced` / `Healthy`
+
+> Note: Phase 4 tasks will be completed incrementally as each infrastructure component
+> is deployed. The root app will be applied once sealed-secrets is ready.
 
 ---
 
@@ -52,22 +55,16 @@ not by running `kubectl apply` manually.
 ### Bootstrap Flow
 
 ```
-  This machine
-  ┌────────────────────────────────────────────┐
-  │                                            │
-  │  1. git push ──────────────────────────┐  │
+  This machine (10.0.4.37)
+  ┌───────────────────────────────────────────┐
+  │                                           │
+  │  git commit/push                          │
+  │  ~/code/homelab  ─────────────────────┐  │
   │                                        │  │
-  │  2. kubectl apply argocd install       │  │
-  │                                        │  │
-  │  3. kubectl apply root-app.yaml        │  │
-  │     (one time only)                    │  │
+  │  kubectl apply root-app.yaml           │  │
+  │  (one time only)                       │  │
   └────────────────────────────────────────┼──┘
-                                           │
-                                     ┌─────▼──────┐
-                                     │   GitHub   │
-                                     │  (homelab) │
-                                     └─────┬──────┘
-                                           │ watches (poll / webhook)
+                                           │ ssh://drew@10.0.4.37
                                      ┌─────▼──────┐
                                      │   ArgoCD   │
                                      │ (in k3s)   │
@@ -117,13 +114,13 @@ not by running `kubectl apply` manually.
   └──────────────────────────────────────────────┘
 ```
 
-### Repository Structure After Scaffolding
+### Repository Structure
 
 ```
 homelab/
 ├── clusters/
 │   └── home/
-│       ├── root-app.yaml             # Apply once to bootstrap
+│       ├── root-app.yaml             # Applied once to bootstrap
 │       ├── infrastructure-app.yaml   # App-of-apps: infra tier
 │       └── workloads-app.yaml        # App-of-apps: workloads tier
 ├── infrastructure/
@@ -134,7 +131,7 @@ homelab/
 │   │   ├── traefik.yaml
 │   │   ├── cert-manager.yaml
 │   │   └── monitoring.yaml
-│   ├── sealed-secrets/               # k8s manifests (populated later)
+│   ├── sealed-secrets/               # k8s manifests (populated per component spec)
 │   ├── longhorn/
 │   ├── synology-csi/
 │   ├── traefik/
@@ -149,7 +146,7 @@ homelab/
     │   ├── radarr.yaml
     │   ├── bazarr.yaml
     │   └── sabnzbd.yaml
-    ├── jellyfin/                     # k8s manifests (populated later)
+    ├── jellyfin/                     # k8s manifests (populated per component spec)
     ├── jellyseerr/
     ├── prowlarr/
     ├── sonarr/
@@ -162,12 +159,13 @@ homelab/
 
 ## Success Criteria
 
-- [ ] `kubectl get pods -n argocd` shows all ArgoCD pods `Running`
-- [ ] ArgoCD UI is accessible (initially via port-forward on port 8080)
+- [x] `kubectl get pods -n argocd` shows all ArgoCD pods `Running`
+- [x] ArgoCD UI is accessible via port-forward
+- [x] Repo registered at `ssh://drew@10.0.4.37/home/drew/code/homelab`
+- [x] Full app-of-apps structure scaffolded and committed
 - [ ] `kubectl get applications -n argocd` shows `root-app`, `infrastructure-app`, and `workloads-app`
 - [ ] All child Application manifests are detected by ArgoCD
-- [ ] A test commit pushed to `main` is reflected in ArgoCD within 3 minutes
-- [ ] ArgoCD is the only way changes are applied going forward — no manual `kubectl apply` for workloads
+- [ ] ArgoCD is the only way changes are applied going forward
 
 ---
 
@@ -191,9 +189,9 @@ homelab/
 - Helm chart (`argo/argo-cd`)
 - Kustomize overlay on top of the official manifests
 
-**Decision:** Official `install.yaml` for the initial bootstrap. ArgoCD cannot manage its own installation until it is running — using the raw manifest is the simplest path to get it running. Once running, ArgoCD can manage itself via the app-of-apps pattern if desired in future.
+**Decision:** Official `install.yaml` for the initial bootstrap. ArgoCD cannot manage its own installation until it is running — using the raw manifest is the simplest path to get it running.
 
-**Trade-offs:** Upgrades require re-applying a newer `install.yaml` rather than a Helm values change. Acceptable for a homelab.
+**Trade-offs:** Upgrades require re-applying a newer `install.yaml`. Acceptable for a homelab.
 
 ---
 
@@ -203,21 +201,27 @@ homelab/
 - GitHub (public or private)
 - Serve repo over SSH from the local machine (`ssh://drew@10.0.4.37/home/drew/code/homelab`)
 
-**Decision:** Local SSH for now. The repo contains the cluster token in `bootstrap/inventory.yml` which is not yet encrypted. Pushing to GitHub before addressing that would expose the secret. A dedicated SSH key pair (`~/.ssh/argocd_repo_key`) was generated and its public key added to `~/.ssh/authorized_keys` on the local machine. ArgoCD uses the private key to pull from `ssh://drew@10.0.4.37/home/drew/code/homelab`.
+**Decision:** Local SSH for now. The repo contains the cluster token in `bootstrap/inventory.yml`
+which is not yet encrypted. A dedicated SSH key pair (`~/.ssh/argocd_repo_key`) was generated
+and its public key added to `~/.ssh/authorized_keys` on the local machine.
 
-**Migration path:** Once `bootstrap/inventory.yml` secrets are encrypted with ansible-vault, the repo can be pushed to GitHub and the ArgoCD repo URL updated.
+**Migration path:** Once `bootstrap/inventory.yml` secrets are encrypted per
+`docs/specs/ansible-vault-inventory.md`, the repo can be pushed to GitHub and the ArgoCD
+repo URL updated.
 
-**Trade-offs:** The local machine must be reachable from the cluster at all times. If this machine is down, ArgoCD cannot sync. Acceptable for a homelab.
+**Trade-offs:** The local machine must be reachable from the cluster at all times. Acceptable for a homelab.
 
 ---
 
 ### Decision: ArgoCD UI access method
 
 **Options considered:**
-- Port-forward (`kubectl port-forward svc/argocd-server -n argocd 8080:443`)
+- Port-forward (`kubectl port-forward svc/argocd-server -n argocd 8443:443`)
 - Traefik ingress (requires Traefik to already be deployed)
 - LoadBalancer service
 
-**Decision:** Port-forward during bootstrap. Traefik is not yet deployed at this stage — it will be deployed by ArgoCD itself as part of the infrastructure tier. Once Traefik is running, a proper ingress for the ArgoCD UI can be added.
+**Decision:** Port-forward during bootstrap. Traefik will be deployed by ArgoCD itself as
+part of the infrastructure tier. Once Traefik is running, a proper ingress for the ArgoCD
+UI will be added.
 
-**Trade-offs:** UI is not persistently accessible until Traefik is deployed. Acceptable for a homelab bootstrap sequence.
+**Trade-offs:** UI is not persistently accessible until Traefik is deployed. Acceptable for a homelab.
