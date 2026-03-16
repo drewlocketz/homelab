@@ -33,7 +33,7 @@ SSH_KEY=~/.ssh/homelab ./scripts/run-k3s-ansible.sh
 - Docker is installed and the daemon is running
 - `bootstrap/k3s-ansible` submodule is initialised
 - `bootstrap/inventory.yml` exists
-- Placeholder IPs (`192.168.1.10-12`) have been replaced with real node IPs
+- Placeholder IPs have been replaced with real node IPs
 - Cluster token has been changed from the default `changeme!`
 - Any unresolved `TODO` items in the inventory are flagged
 - SSH key exists locally

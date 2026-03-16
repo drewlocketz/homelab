@@ -11,7 +11,7 @@ are driven from this repo. No manual `kubectl apply` after initial bootstrap.
 | | |
 |---|---|
 | **Distribution** | k3s (3-node HA, embedded etcd) |
-| **Nodes** | 192.168.1.10, 192.168.1.11, 192.168.1.12 |
+| **Nodes** | 10.0.4.26, 10.0.4.35, 10.0.4.21 |
 | **GitOps** | ArgoCD (app-of-apps pattern) |
 | **Secrets** | Sealed Secrets |
 | **Ingress** | Traefik |

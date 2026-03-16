@@ -49,7 +49,7 @@ time so it can be managed via ArgoCD later.
   │server│ │server│ │server│
   │+etcd │ │+etcd │ │+etcd │
   │      │ │      │ │      │
-  │.1.10 │ │.1.11 │ │.1.12 │
+  │.4.26 │ │.4.35 │ │.4.21 │
   └──────┘ └──────┘ └──────┘
       └────────┬───────┘
                │ embedded etcd

@@ -16,6 +16,7 @@ SSH_KEY="${SSH_KEY:-$HOME/.ssh/id_ed25519}"
 ANSIBLE_IMAGE="willhallonline/ansible:2.16-alpine-3.20"
 
 # Placeholder IPs — update inventory.yml before running
+# These were the original placeholder IPs — the check below is now a no-op but kept for safety
 PLACEHOLDER_IPS=("192.168.1.10" "192.168.1.11" "192.168.1.12")
 
 # ── Colours ──────────────────────────────────────────────────────────────────
