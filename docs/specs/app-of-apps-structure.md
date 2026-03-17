@@ -1,36 +1,39 @@
-# App-of-Apps Pattern & Repository Structure
+# ApplicationSet Structure & Repository Layout
 
 ## Executive Summary
 
-ArgoCD's app-of-apps pattern allows a single "root" ArgoCD Application to manage all
-other ArgoCD Applications declaratively. Rather than manually applying each application
-to the cluster, the root app points to a directory of ArgoCD Application manifests in
-this repo — ArgoCD then reconciles and deploys everything from there. This spec defines
-the full repository structure and ArgoCD application hierarchy for this homelab cluster,
-covering both infrastructure components and media workloads. The design separates
-cluster-critical infrastructure (storage, ingress, secrets) from user-facing workloads
-(media stack) to allow independent lifecycle management and deployment ordering via
-sync waves.
+ArgoCD's ApplicationSet controller allows a single manifest to dynamically generate multiple
+ArgoCD Applications using a generator. Rather than manually writing an Application manifest
+for every component, two ApplicationSets — one for infrastructure, one for workloads — use
+the git directory generator to auto-create a child Application for every directory found
+under `infrastructure/` and `workloads/`. Adding a new component is as simple as adding a
+new directory; no ApplicationSet manifest changes required.
 
 **Author:** Drew Locketz
-**Date:** 2026-03-15
+**Date:** 2026-03-16
 **Status:** Draft
 
 ---
 
 ## Tasks
 
-- [ ] 1. Scaffold the full directory structure in this repo
-- [ ] 2. Create the ArgoCD root Application manifest (`clusters/home/root-app.yaml`)
-- [ ] 3. Create the infrastructure app-of-apps Application manifest
-- [ ] 4. Create the workloads app-of-apps Application manifest
-- [ ] 5. Create placeholder ArgoCD Application manifests for each infrastructure component with correct sync waves
-- [ ] 6. Create placeholder ArgoCD Application manifests for each workload
-- [ ] 7. Create placeholder manifest directories for each infrastructure component
-- [ ] 8. Create placeholder manifest directories for each workload
-- [ ] 9. Apply the root app to the cluster manually to bootstrap ArgoCD self-management
-- [ ] 10. Verify ArgoCD detects and displays all child applications
-- [ ] 11. Commit and push — verify ArgoCD syncs the full hierarchy from Git
+### Cleanup (remove old app-of-apps structure)
+- [ ] 1. Delete `clusters/home/root-app.yaml`
+- [ ] 2. Delete `clusters/home/infrastructure-app.yaml`
+- [ ] 3. Delete `clusters/home/workloads-app.yaml`
+- [ ] 4. Delete `infrastructure/apps/sealed-secrets.yaml` and the `infrastructure/apps/` directory
+- [ ] 5. Delete the `apps/` directory (empty, never used)
+
+### Scaffold new structure
+- [ ] 6. Create `clusters/home/infrastructure-appset.yaml` (git directory generator → `infrastructure/*`)
+- [ ] 7. Create `clusters/home/workloads-appset.yaml` (git directory generator → `workloads/*`)
+- [ ] 8. Create `infrastructure/sealed-secrets/namespace.yaml` — a stub Namespace manifest to allow the ApplicationSet to be verified end-to-end; other infrastructure components get their placeholder directories when their own specs are implemented
+- [ ] 9. Create `workloads/` placeholder directories as workload specs are implemented — no stubs added at this stage
+
+### Bootstrap
+- [ ] 10. Apply both ApplicationSets to the cluster manually (`kubectl apply -f clusters/home/`)
+- [ ] 11. Verify ArgoCD detects and displays all generated child applications
+- [ ] 12. Commit and push — verify ArgoCD syncs all apps from Git
 
 ---
 
@@ -44,17 +47,16 @@ homelab/
 │   └── k3s-ansible/                  # Submodule
 ├── clusters/
 │   └── home/
-│       ├── root-app.yaml             # Applied manually once — bootstraps everything
-│       ├── infrastructure-app.yaml   # App-of-apps for infrastructure tier
-│       └── workloads-app.yaml        # App-of-apps for workloads tier
-├── infrastructure/                   # Actual k8s manifests for infra components
+│       ├── infrastructure-appset.yaml   # Applied manually once — generates infra apps
+│       └── workloads-appset.yaml        # Applied manually once — generates workload apps
+├── infrastructure/                   # One directory per infra component
 │   ├── sealed-secrets/
 │   ├── longhorn/
 │   ├── synology-csi/
 │   ├── traefik/
 │   ├── cert-manager/
 │   └── monitoring/                   # kube-prometheus-stack + loki
-├── workloads/                        # Actual k8s manifests for workloads
+├── workloads/                        # One directory per workload
 │   ├── jellyfin/
 │   ├── jellyseerr/
 │   ├── sonarr/
@@ -75,34 +77,58 @@ homelab/
         │
         │  kubectl apply (once, manually)
         ▼
-  ┌─────────────────┐
-  │    root-app     │  ArgoCD Application
-  │  (app-of-apps)  │
-  └────────┬────────┘
-           │ manages
-     ┌─────┴──────┐
-     ▼            ▼
-  ┌──────────┐  ┌──────────┐
-  │  infra   │  │workloads │  ArgoCD Applications
-  │  app     │  │  app     │  (app-of-apps)
-  └────┬─────┘  └────┬─────┘
-       │              │
-       ▼              ▼
-  ┌─────────────────────────────────────────────┐
-  │            Child Applications               │
-  │                                             │
-  │  Infrastructure (sync waves 1-3):           │
-  │    wave 1: sealed-secrets                   │
-  │    wave 2: longhorn, synology-csi           │
-  │    wave 3: traefik, cert-manager            │
-  │    wave 4: monitoring (kube-prom, loki)     │
-  │                                             │
-  │  Workloads (sync wave 5+):                  │
-  │    wave 5: jellyfin, jellyseerr             │
-  │    wave 5: prowlarr                         │
-  │    wave 6: sonarr, radarr, bazarr           │
-  │    wave 6: sabnzbd (+gluetun sidecar)       │
-  └─────────────────────────────────────────────┘
+  ┌─────────────────────────┐   ┌─────────────────────────┐
+  │  infrastructure-appset  │   │   workloads-appset       │
+  │  (ApplicationSet)       │   │   (ApplicationSet)       │
+  └───────────┬─────────────┘   └────────────┬────────────┘
+              │ generates                     │ generates
+              ▼                               ▼
+  ┌────────────────────────┐    ┌────────────────────────┐
+  │  sealed-secrets  app   │    │  jellyfin app          │
+  │  longhorn        app   │    │  jellyseerr app        │
+  │  synology-csi    app   │    │  sonarr app            │
+  │  traefik         app   │    │  radarr app            │
+  │  cert-manager    app   │    │  prowlarr app          │
+  │  monitoring      app   │    │  bazarr app            │
+  └────────────────────────┘    │  sabnzbd app           │
+                                └────────────────────────┘
+```
+
+### ApplicationSet Example (infrastructure)
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: infrastructure
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL: ssh://git@localhost/~/homelab.git
+        revision: HEAD
+        directories:
+          - path: infrastructure/*
+  template:
+    metadata:
+      name: '{{path.basename}}'
+      annotations:
+        argocd.argoproj.io/sync-wave: '{{metadata.annotations.sync-wave}}'  # see Design Decisions
+    spec:
+      project: default
+      source:
+        repoURL: ssh://git@localhost/~/homelab.git
+        targetRevision: HEAD
+        path: '{{path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{path.basename}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
 ```
 
 ### Storage Layout
@@ -146,14 +172,16 @@ homelab/
 
 ## Success Criteria
 
-- [ ] `kubectl get applications -n argocd` shows root-app, infrastructure-app, and workloads-app
-- [ ] All child ArgoCD Applications are visible and show `Synced` / `Healthy`
-- [ ] Sync waves deploy infrastructure in correct order (sealed-secrets before all others)
+- [ ] `kubectl get applicationsets -n argocd` shows `infrastructure` and `workloads`
+- [ ] `kubectl get applications -n argocd` shows one Application per component directory
+- [ ] All child ArgoCD Applications show `Synced` / `Healthy`
+- [ ] sealed-secrets is running before any app that consumes a SealedSecret syncs
 - [ ] All workload namespaces exist and pods reach `Running` state
 - [ ] Sealed secrets can be decrypted by workloads that use them
 - [ ] Jellyfin is accessible via Traefik ingress and can browse media from Synology
 - [ ] sabnzbd traffic is routed through gluetun VPN (verify via IP leak test)
-- [ ] Any change pushed to `main` in this repo is automatically synced by ArgoCD within 3 minutes
+- [ ] Any change pushed to `main` is automatically synced by ArgoCD within 3 minutes
+- [ ] Adding a new directory under `infrastructure/` or `workloads/` creates a new Application automatically
 
 ---
 
@@ -162,34 +190,59 @@ homelab/
 | Artifact | Description |
 |---|---|
 | `docs/specs/k3s-ansible-bootstrap.md` | Cluster provisioning spec — defines the cluster this runs on |
-| https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/ | Official ArgoCD app-of-apps documentation |
-| https://github.com/k3s-io/k3s-ansible | Ansible submodule used for cluster provisioning |
+| `docs/specs/argocd-bootstrap.md` | ArgoCD install spec — defines the ArgoCD instance managing these apps |
+| https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/ | Official ArgoCD ApplicationSet documentation |
+| https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-Git/ | Git directory generator documentation |
 
 ---
 
 ## Design Decisions
 
-### Decision: Two-tier app-of-apps (infrastructure + workloads) vs flat
+### Decision: ApplicationSet over app-of-apps
 
 **Options considered:**
-- Flat: one root app managing all child apps directly
-- Two-tier: root app manages two group apps (infrastructure, workloads) which each manage their children
+- App-of-apps: root Application manages child Application manifests stored in Git
+- ApplicationSet: generator automatically creates Applications from directory structure
 
-**Decision:** Two-tier. Separating infrastructure from workloads allows the infra group to fully sync and stabilize before workloads attempt to start. It also makes it easier to sync or rollback one tier independently.
+**Decision:** ApplicationSet with git directory generator. Adding a new component requires only
+creating a new directory — no Application manifest to write and commit separately. The generator
+handles discovery automatically, which scales better and reduces boilerplate.
 
-**Trade-offs:** Slightly more ArgoCD Application objects to manage. Worth it for the deployment ordering guarantees.
+**Trade-offs:** Slightly less explicit than hand-written Application manifests. Requires the
+ApplicationSet controller (bundled with ArgoCD since v2.3).
 
 ---
 
-### Decision: Sync waves for deployment ordering
+### Decision: Two ApplicationSets (infrastructure + workloads) vs one
 
 **Options considered:**
-- Manual ordering (apply manifests by hand in sequence)
-- ArgoCD sync waves via `argocd.argoproj.io/sync-wave` annotation
+- Single ApplicationSet covering all directories
+- Two ApplicationSets: one for `infrastructure/*`, one for `workloads/*`
 
-**Decision:** Sync waves. Sealed-secrets must be running before any app that consumes a SealedSecret can sync. Longhorn and storage must be available before workloads that claim PVCs. Sync waves encode this ordering declaratively.
+**Decision:** Two ApplicationSets. Separating infrastructure from workloads allows independent
+sync policies, annotations, and lifecycle management per tier. Infrastructure apps can have
+more aggressive retry behavior; workloads can be managed separately without touching infra.
 
-**Trade-offs:** Adds an annotation to each Application manifest. No meaningful downside.
+**Trade-offs:** Two manifests to apply at bootstrap instead of one.
+
+---
+
+### Decision: Deployment ordering without sync waves
+
+**Options considered:**
+- Sync wave annotations on generated Applications (requires per-app metadata, not supported by git directory generator without a workaround)
+- Separate ApplicationSets per wave (e.g., `sealed-secrets-appset.yaml`, `infra-tier1-appset.yaml`)
+- Rely on ArgoCD health checks + automated sync retry
+
+**Decision:** Rely on ArgoCD's health checks and automated sync with retry. When a dependent
+app (e.g., one consuming a SealedSecret) fails to sync because sealed-secrets isn't ready yet,
+ArgoCD will retry on the next sync cycle. Since automated sync is enabled with `selfHeal: true`,
+the cluster converges to the correct state within a few sync cycles without explicit wave ordering.
+
+**Trade-offs:** Initial bootstrap takes a few sync cycles to fully converge rather than deploying
+in strict order. Acceptable for a homelab where convergence time is not critical. If strict
+ordering becomes necessary in the future, the infrastructure ApplicationSet can be split into
+wave-based sets.
 
 ---
 
@@ -199,7 +252,9 @@ homelab/
 - Standalone gluetun pod acting as a gateway for multiple apps
 - Gluetun sidecar on each app that needs VPN
 
-**Decision:** Sidecar on sabnzbd only. The Docker gateway pattern (`network_mode: container:gluetun`) does not translate cleanly to Kubernetes. Only sabnzbd (the downloader) requires VPN — the *arr apps manage catalogues and talk to sabnzbd's API internally, so they do not need VPN routing.
+**Decision:** Sidecar on sabnzbd only. The Docker gateway pattern (`network_mode: container:gluetun`)
+does not translate cleanly to Kubernetes. Only sabnzbd (the downloader) requires VPN — the *arr
+apps manage catalogues and talk to sabnzbd's API internally, so they do not need VPN routing.
 
 **Trade-offs:** If additional apps need VPN in future, each will need its own gluetun sidecar.
 
@@ -212,6 +267,9 @@ homelab/
 - All storage on Synology NAS
 - Split: Longhorn for app data/metadata, Synology for large media files
 
-**Decision:** Split storage. Longhorn provides fast replicated SSD storage ideal for database files and application config. Synology NAS provides high-capacity storage for movies, TV, and downloads where raw throughput matters more than replication speed.
+**Decision:** Split storage. Longhorn provides fast replicated SSD storage ideal for database
+files and application config. Synology NAS provides high-capacity storage for movies, TV, and
+downloads where raw throughput matters more than replication speed.
 
-**Trade-offs:** Two storage backends to maintain. The performance and capacity benefits justify the complexity.
+**Trade-offs:** Two storage backends to maintain. The performance and capacity benefits justify
+the complexity.

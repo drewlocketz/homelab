@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: infrastructure
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL: ssh://drew@10.0.4.37/home/drew/code/homelab
+        revision: main
+        directories:
+          - path: infrastructure/*
+  template:
+    metadata:
+      name: '{{path.basename}}'
+      namespace: argocd
+    spec:
+      project: default
+      source:
+        repoURL: ssh://drew@10.0.4.37/home/drew/code/homelab
+        targetRevision: main
+        path: '{{path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{path.basename}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

@@ -12,7 +12,7 @@ time so it can be managed via ArgoCD later.
 
 **Author:** Drew Locketz
 **Date:** 2026-03-15
-**Status:** In Progress
+**Status:** Complete
 
 ---
 
@@ -26,7 +26,7 @@ time so it can be managed via ArgoCD later.
 - [x] 6. Verify all nodes are Ready via `kubectl get nodes`
 - [x] 7. Verify embedded etcd is healthy (built into k3s-server process, confirmed via node roles showing `etcd`)
 - [x] 8. Verify Traefik is absent from the cluster
-- [ ] 9. Verify HA by cordoning one node and confirming the cluster remains operational
+- [x] 9. Verify HA by cordoning one node and confirming the cluster remains operational
 
 ---
 
@@ -67,12 +67,12 @@ No external database is required — etcd is embedded and distributed across all
 
 ## Success Criteria
 
-- [ ] All 3 nodes appear as `Ready` in `kubectl get nodes`
-- [ ] All nodes show role `control-plane` confirming HA server configuration
-- [ ] Embedded etcd pods are present and healthy in `kube-system`
-- [ ] Traefik is **not** present in the cluster (`kubectl get all -n kube-system | grep traefik` returns nothing)
-- [ ] Cluster remains operational when one node is cordoned/taken offline (HA verified)
-- [ ] `kubectl get nodes` is accessible from the control machine via the generated kubeconfig
+- [x] All 3 nodes appear as `Ready` in `kubectl get nodes`
+- [x] All nodes show role `control-plane` confirming HA server configuration
+- [x] Embedded etcd pods are present and healthy in `kube-system`
+- [x] Traefik is **not** present in the cluster (`kubectl get all -n kube-system | grep traefik` returns nothing)
+- [x] Cluster remains operational when one node is cordoned/taken offline (HA verified)
+- [x] `kubectl get nodes` is accessible from the control machine via the generated kubeconfig
 
 ---
 
