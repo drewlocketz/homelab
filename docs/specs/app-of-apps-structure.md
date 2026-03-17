@@ -11,29 +11,29 @@ new directory; no ApplicationSet manifest changes required.
 
 **Author:** Drew Locketz
 **Date:** 2026-03-16
-**Status:** Draft
+**Status:** Complete
 
 ---
 
 ## Tasks
 
 ### Cleanup (remove old app-of-apps structure)
-- [ ] 1. Delete `clusters/home/root-app.yaml`
-- [ ] 2. Delete `clusters/home/infrastructure-app.yaml`
-- [ ] 3. Delete `clusters/home/workloads-app.yaml`
-- [ ] 4. Delete `infrastructure/apps/sealed-secrets.yaml` and the `infrastructure/apps/` directory
-- [ ] 5. Delete the `apps/` directory (empty, never used)
+- [x] 1. Delete `clusters/home/root-app.yaml`
+- [x] 2. Delete `clusters/home/infrastructure-app.yaml`
+- [x] 3. Delete `clusters/home/workloads-app.yaml`
+- [x] 4. Delete `infrastructure/apps/sealed-secrets.yaml` and the `infrastructure/apps/` directory
+- [x] 5. Delete the `apps/` directory (empty, never used)
 
 ### Scaffold new structure
-- [ ] 6. Create `clusters/home/infrastructure-appset.yaml` (git directory generator → `infrastructure/*`)
-- [ ] 7. Create `clusters/home/workloads-appset.yaml` (git directory generator → `workloads/*`)
-- [ ] 8. Create `infrastructure/sealed-secrets/namespace.yaml` — a stub Namespace manifest to allow the ApplicationSet to be verified end-to-end; other infrastructure components get their placeholder directories when their own specs are implemented
-- [ ] 9. Create `workloads/` placeholder directories as workload specs are implemented — no stubs added at this stage
+- [x] 6. Create `clusters/home/infrastructure-appset.yaml` (git directory generator → `infrastructure/*`)
+- [x] 7. Create `clusters/home/workloads-appset.yaml` (git directory generator → `workloads/*`)
+- [x] 8. Create `infrastructure/sealed-secrets/namespace.yaml` — a stub Namespace manifest to allow the ApplicationSet to be verified end-to-end; other infrastructure components get their placeholder directories when their own specs are implemented
+- [x] 9. Create `workloads/` placeholder directories as workload specs are implemented — no stubs added at this stage
 
 ### Bootstrap
-- [ ] 10. Apply both ApplicationSets to the cluster manually (`kubectl apply -f clusters/home/`)
-- [ ] 11. Verify ArgoCD detects and displays all generated child applications
-- [ ] 12. Commit and push — verify ArgoCD syncs all apps from Git
+- [x] 10. Apply both ApplicationSets to the cluster manually (`kubectl apply -f clusters/home/`)
+- [x] 11. Verify ArgoCD detects and displays all generated child applications
+- [x] 12. Commit and push — verify ArgoCD syncs all apps from Git
 
 ---
 
