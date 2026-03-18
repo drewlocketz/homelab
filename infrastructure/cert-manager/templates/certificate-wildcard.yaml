@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: wildcard-home-tls
   issuerRef:
-    name: letsencrypt-staging
+    name: letsencrypt-production
     kind: ClusterIssuer
   dnsNames:
     - "*.home.drewdevlab.com"
