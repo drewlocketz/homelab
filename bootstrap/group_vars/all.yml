@@ -1,0 +1,5 @@
+---
+# Extra packages to install on all nodes before k3s provisioning
+extra_packages:
+  - open-iscsi
+  - nfs-common

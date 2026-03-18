@@ -1,0 +1,5 @@
+longhorn:
+  defaultSettings:
+    defaultReplicaCount: 3
+  persistence:
+    defaultClassReplicaCount: 3
