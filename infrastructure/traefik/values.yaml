@@ -1,4 +1,13 @@
 traefik:
+  api:
+    dashboard: true
+    insecure: true
+
+  ports:
+    traefik:
+      expose:
+        default: false
+
   service:
     annotations:
       metallb.universe.tf/loadBalancerIPs: "10.0.4.240"
