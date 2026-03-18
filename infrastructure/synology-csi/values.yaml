@@ -1,0 +1,24 @@
+synology-csi:
+  clientInfoSecret:
+    create: false
+    name: synology-csi-client-info
+
+  storageClasses:
+    iscsi-delete:
+      disabled: true
+    iscsi-retain:
+      disabled: true
+    nfs-delete:
+      disabled: true
+    nfs-retain:
+      disabled: true
+    smb-delete:
+      disabled: true
+    smb-retain:
+      disabled: true
+
+  volumeSnapshotClasses:
+    delete:
+      disabled: true
+    retain:
+      disabled: true
