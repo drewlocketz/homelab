@@ -9,4 +9,4 @@ spec:
     name: letsencrypt-staging
     kind: ClusterIssuer
   dnsNames:
-    - "*.home.yourdomain.com"
+    - "*.home.drewdevlab.com"

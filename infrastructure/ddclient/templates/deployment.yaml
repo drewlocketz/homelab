@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ddclient
+  labels:
+    app: ddclient
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ddclient
+  template:
+    metadata:
+      labels:
+        app: ddclient
+    spec:
+      initContainers:
+        - name: inject-token
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              cp /configmap/ddclient.conf /config/ddclient.conf
+              sed -i "s/CLOUDFLARE_API_TOKEN/$(cat /secret/api-token)/" /config/ddclient.conf
+          volumeMounts:
+            - name: configmap
+              mountPath: /configmap
+            - name: config
+              mountPath: /config
+            - name: secret
+              mountPath: /secret
+      containers:
+        - name: ddclient
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          env:
+            - name: TZ
+              value: {{ .Values.env.TZ }}
+            - name: PUID
+              value: {{ .Values.env.PUID | quote }}
+            - name: PGID
+              value: {{ .Values.env.PGID | quote }}
+          volumeMounts:
+            - name: config
+              mountPath: /config
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              memory: 64Mi
+      volumes:
+        - name: configmap
+          configMap:
+            name: ddclient-config
+        - name: config
+          emptyDir: {}
+        - name: secret
+          secret:
+            secretName: cloudflare-api-token

@@ -1,0 +1,13 @@
+image:
+  repository: lscr.io/linuxserver/ddclient
+  tag: "latest"
+
+env:
+  TZ: America/Chicago
+  PUID: "1000"
+  PGID: "1000"
+
+ddclient:
+  daemon: 300
+  zone: drewdevlab.com
+  record: "*.home.drewdevlab.com"

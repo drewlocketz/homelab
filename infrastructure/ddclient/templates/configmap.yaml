@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ddclient-config
+data:
+  ddclient.conf: |
+    daemon={{ .Values.ddclient.daemon }}
+    syslog=yes
+    ssl=yes
+    use=web
+    web=https://cloudflare.com/cdn-cgi/trace
+    web-skip=ip=
+
+    protocol=cloudflare,
+    zone={{ .Values.ddclient.zone }},
+    ttl=1,
+    login=token,
+    password=CLOUDFLARE_API_TOKEN
+    {{ .Values.ddclient.record }}
