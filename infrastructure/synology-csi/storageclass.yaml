@@ -5,6 +5,7 @@ metadata:
 provisioner: csi.san.synology.com
 parameters:
   protocol: nfs
+  dsm: "10.0.4.42"
   location: /volume1
 reclaimPolicy: Retain
 allowVolumeExpansion: true
