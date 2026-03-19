@@ -1,0 +1,5 @@
+intel-device-plugins-gpu:
+  sharedDevNum: 10
+  nodeFeatureRule: false
+  nodeSelector:
+    intel.feature.node.kubernetes.io/gpu: "true"
