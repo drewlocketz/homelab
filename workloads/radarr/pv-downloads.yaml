@@ -12,6 +12,8 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   storageClassName: ""
+  mountOptions:
+    - nfsvers=4.1
   nfs:
     server: 10.0.4.42
     path: /volume1/k8s-csi-pvc-15af394e-b14a-4a35-9/downloads
