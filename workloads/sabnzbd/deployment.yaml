@@ -36,7 +36,7 @@ spec:
                   name: sabnzbd-vpn
                   key: WIREGUARD_PRIVATE_KEY
             - name: SERVER_COUNTRIES
-              value: Mexico
+              value: Netherlands
           ports:
             - containerPort: 8080
               name: http
