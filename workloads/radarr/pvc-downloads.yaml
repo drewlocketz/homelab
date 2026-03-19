@@ -5,7 +5,8 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: synology-nfs
+  storageClassName: ""
+  volumeName: radarr-downloads
   resources:
     requests:
       storage: 1Ti

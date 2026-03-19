@@ -5,7 +5,8 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: synology-nfs
+  storageClassName: ""
+  volumeName: sonarr-downloads
   resources:
     requests:
       storage: 1Ti
