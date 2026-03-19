@@ -29,6 +29,19 @@ spec:
               mountPath: /config
             - name: media
               mountPath: /media
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            failureThreshold: 3
           resources:
             limits:
               gpu.intel.com/i915: "1"
