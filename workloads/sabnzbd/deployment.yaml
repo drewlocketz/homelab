@@ -52,17 +52,12 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
-            - name: downloads
-              mountPath: /downloads
             - name: storage
               mountPath: /storage
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: sabnzbd-config
-        - name: downloads
-          persistentVolumeClaim:
-            claimName: sabnzbd-downloads
         - name: storage
           persistentVolumeClaim:
             claimName: sabnzbd-storage
