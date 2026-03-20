@@ -54,6 +54,8 @@ spec:
               mountPath: /config
             - name: storage
               mountPath: /storage
+            - name: incomplete
+              mountPath: /storage/downloads/incomplete
       volumes:
         - name: config
           persistentVolumeClaim:
@@ -61,3 +63,6 @@ spec:
         - name: storage
           persistentVolumeClaim:
             claimName: sabnzbd-storage
+        - name: incomplete
+          persistentVolumeClaim:
+            claimName: sabnzbd-incomplete
