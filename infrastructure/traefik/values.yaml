@@ -6,6 +6,14 @@ traefik:
   service:
     annotations:
       metallb.universe.tf/loadBalancerIPs: "10.0.4.240"
+    spec:
+      externalTrafficPolicy: Local
+
+  experimental:
+    plugins:
+      crowdsec-bouncer:
+        moduleName: "github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
+        version: "v1.5.1"
 
   ports:
     traefik:
