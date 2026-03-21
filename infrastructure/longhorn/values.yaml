@@ -3,5 +3,6 @@ longhorn:
     jobEnabled: false
   defaultSettings:
     defaultReplicaCount: 3
+    storageMinimalAvailablePercentage: 15
   persistence:
     defaultClassReplicaCount: 3
