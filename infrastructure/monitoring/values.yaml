@@ -10,7 +10,7 @@ kube-prometheus-stack:
               - ReadWriteOnce
             resources:
               requests:
-                storage: 50Gi
+                storage: 20Gi
 
   grafana:
     admin:
