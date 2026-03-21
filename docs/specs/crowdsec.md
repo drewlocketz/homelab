@@ -66,8 +66,8 @@ This spec cannot be implemented until the following specs are complete:
 - [x] 2. Enable the CrowdSec bouncer plugin in Traefik Helm values
 - [x] 3. Create `infrastructure/crowdsec/` with Helm chart definition
 - [x] 4. Create CrowdSec Helm values configuring LAPI, agent, and Traefik log acquisition
-- [ ] 5. Create Traefik `Middleware` CRD for the CrowdSec bouncer
-- [ ] 6. Apply bouncer middleware to `websecure` entrypoint globally
+- [x] 5. Create Traefik `Middleware` CRD for the CrowdSec bouncer
+- [x] 6. Apply bouncer middleware to `websecure` entrypoint globally
 - [ ] 7. Commit, sync, and verify CrowdSec pods are running
 - [ ] 8. Verify an IP ban works end-to-end
 

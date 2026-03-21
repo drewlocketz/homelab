@@ -9,6 +9,9 @@ traefik:
     spec:
       externalTrafficPolicy: Local
 
+  additionalArguments:
+    - "--entrypoints.websecure.http.middlewares=crowdsec-crowdsec-bouncer@kubernetescrd"
+
   experimental:
     plugins:
       crowdsec-bouncer:
