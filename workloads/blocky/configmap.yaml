@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: blocky-config
+  labels:
+    app: blocky
+data:
+  config.yml: |
+    upstreams:
+      groups:
+        default:
+          - 1.1.1.1
+          - 1.0.0.1
+
+    blocking:
+      denylists:
+        ads:
+          - https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+          - |
+            /^ad([sxv]?[0-9]*|system)[_.-]([^.[:space:]]+\.){1,}|[_.-]ad([sxv]?[0-9]*|system)[_.-]/
+          - https://adguardteam.github.io/HostlistsRegistry/assets/filter_1.txt
+          - https://adguardteam.github.io/HostlistsRegistry/assets/filter_2.txt
+      clientGroupsBlock:
+        default:
+          - ads
+
+    customDNS:
+      mapping:
+        "*.home.drewdevlab.com": 10.0.4.240
+
+    ports:
+      dns: 53
+      http: 4000
+
+    prometheus:
+      enable: true
+      path: /metrics
+
+    log:
+      level: info

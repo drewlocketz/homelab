@@ -11,5 +11,4 @@ spec:
       services:
         - name: sabnzbd
           port: 8080
-  tls:
-    secretName: wildcard-home-tls
+  tls: {}

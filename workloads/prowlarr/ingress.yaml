@@ -11,5 +11,4 @@ spec:
       services:
         - name: prowlarr
           port: 9696
-  tls:
-    secretName: wildcard-home-tls
+  tls: {}

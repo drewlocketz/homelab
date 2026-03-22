@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: blocky-metrics
+  labels:
+    app: blocky
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "4000"
+spec:
+  type: ClusterIP
+  selector:
+    app: blocky
+  ports:
+    - port: 4000
+      targetPort: metrics
+      protocol: TCP
+      name: metrics
