@@ -31,7 +31,7 @@ spec:
               topologyKey: kubernetes.io/hostname
       containers:
         - name: blocky
-          image: spx01/blocky:latest
+          image: ghcr.io/0xerr0r/blocky:latest
           ports:
             - containerPort: 53
               name: dns-tcp
