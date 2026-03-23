@@ -19,9 +19,12 @@ data:
           - |
             /^ad([sxv]?[0-9]*|system)[_.-]([^.[:space:]]+\.){1,}|[_.-]ad([sxv]?[0-9]*|system)[_.-]/
           - https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/domains/pro.txt
+        security:
+          - https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/domains/tif.txt
       clientGroupsBlock:
         default:
           - ads
+          - security
 
     customDNS:
       customTTL: 1h
