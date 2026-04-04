@@ -2,6 +2,14 @@ crowdsec:
   container_runtime: containerd
 
   lapi:
+    dashboard:
+      enabled: false
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        additionalLabels:
+          release: monitoring
     replicas: 1
     persistentVolume:
       data:
@@ -17,6 +25,12 @@ crowdsec:
         value: "<will-be-replaced-with-sealed-secret>"
 
   agent:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        additionalLabels:
+          release: monitoring
     acquisition:
       - namespace: traefik
         podName: traefik-*
