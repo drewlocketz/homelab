@@ -3092,11 +3092,11 @@ data:
                 "uid": "Prometheus"
               },
               "editorMode": "code",
-              "expr": "cs_lapi_decision{instance=~\"${host:raw}\"}[$__range:$__interval]",
+              "expr": "cs_lapi_decision{instance=~\"${host:raw}\"}",
               "format": "table",
-              "instant": false,
+              "instant": true,
               "legendFormat": "__auto",
-              "range": true,
+              "range": false,
               "refId": "A"
             }
           ],
