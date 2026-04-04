@@ -42,6 +42,13 @@ kube-prometheus-stack:
               requests:
                 storage: 1Gi
 
+prometheus-pushgateway:
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      release: monitoring
+    honorLabels: true
+
 loki:
   deploymentMode: SingleBinary
 
