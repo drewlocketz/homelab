@@ -38,6 +38,8 @@ data:
         radarr.home.drewdevlab.com: 10.0.4.243
         sonarr.home.drewdevlab.com: 10.0.4.243
         sabnzbd.home.drewdevlab.com: 10.0.4.243
+        jellyfin.home.drewdevlab.com: 10.0.4.240
+        jellyseerr.home.drewdevlab.com: 10.0.4.240
 
     ports:
       dns: 53
