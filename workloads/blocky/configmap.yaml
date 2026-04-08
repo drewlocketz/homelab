@@ -29,10 +29,16 @@ data:
     customDNS:
       customTTL: 1h
       filterUnmappedTypes: true
-      zone: |
-        $ORIGIN home.drewdevlab.com.
-        @ 3600 IN A 10.0.4.240
-        * 3600 IN A 10.0.4.240
+      mapping:
+        home.drewdevlab.com: 10.0.4.240
+        grafana.home.drewdevlab.com: 10.0.4.240
+        argocd.home.drewdevlab.com: 10.0.4.240
+        n8n.home.drewdevlab.com: 10.0.4.240
+        wg.home.drewdevlab.com: 10.0.4.240
+        prowlarr.home.drewdevlab.com: 10.0.4.240
+        radarr.home.drewdevlab.com: 10.0.4.240
+        sonarr.home.drewdevlab.com: 10.0.4.240
+        sabnzbd.home.drewdevlab.com: 10.0.4.240
 
     ports:
       dns: 53
