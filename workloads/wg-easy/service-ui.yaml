@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wg-easy-ui
+  labels:
+    app: wg-easy
+spec:
+  type: ClusterIP
+  selector:
+    app: wg-easy
+  ports:
+    - port: 51821
+      targetPort: http
+      protocol: TCP
+      name: http

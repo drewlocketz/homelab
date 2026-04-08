@@ -1,0 +1,14 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: wg-easy
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`wg.home.drewdevlab.com`)
+      kind: Rule
+      services:
+        - name: wg-easy-ui
+          port: 51821
+  tls: {}
