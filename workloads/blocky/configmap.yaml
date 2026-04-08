@@ -29,13 +29,10 @@ data:
     customDNS:
       customTTL: 1h
       filterUnmappedTypes: true
-      mapping:
-        jellyfin.home.drewdevlab.com: 10.0.4.240
-        jellyseerr.home.drewdevlab.com: 10.0.4.240
-        prowlarr.home.drewdevlab.com: 10.0.4.240
-        radarr.home.drewdevlab.com: 10.0.4.240
-        sabnzbd.home.drewdevlab.com: 10.0.4.240
-        sonarr.home.drewdevlab.com: 10.0.4.240
+      zone: |
+        $ORIGIN home.drewdevlab.com.
+        @ 3600 IN A 10.0.4.240
+        * 3600 IN A 10.0.4.240
 
     ports:
       dns: 53
