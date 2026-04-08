@@ -4,7 +4,7 @@ metadata:
   name: sonarr
 spec:
   entryPoints:
-    - websecure
+    - websecure-internal
   routes:
     - match: Host(`sonarr.home.drewdevlab.com`)
       kind: Rule

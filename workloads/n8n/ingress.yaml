@@ -4,7 +4,7 @@ metadata:
   name: n8n
 spec:
   entryPoints:
-    - websecure
+    - websecure-internal
   routes:
     - match: Host(`n8n.home.drewdevlab.com`)
       kind: Rule

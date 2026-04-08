@@ -8,6 +8,13 @@ traefik:
       metallb.universe.tf/loadBalancerIPs: "10.0.4.240"
     spec:
       externalTrafficPolicy: Local
+    additionalServices:
+      internal:
+        type: LoadBalancer
+        annotations:
+          metallb.universe.tf/loadBalancerIPs: "10.0.4.243"
+        spec:
+          externalTrafficPolicy: Local
 
   additionalArguments:
     - "--entrypoints.websecure.http.middlewares=crowdsec-crowdsec-bouncer@kubernetescrd"
@@ -28,12 +35,40 @@ traefik:
       expose:
         default: false
     web:
+      expose:
+        default: true
+        internal: false
       http:
         redirections:
           entryPoint:
             to: websecure
             scheme: https
     websecure:
+      expose:
+        default: true
+        internal: false
+      http:
+        tls:
+          enabled: true
+    web-internal:
+      port: 8001
+      exposedPort: 80
+      protocol: TCP
+      expose:
+        default: false
+        internal: true
+      http:
+        redirections:
+          entryPoint:
+            to: websecure-internal
+            scheme: https
+    websecure-internal:
+      port: 8444
+      exposedPort: 443
+      protocol: TCP
+      expose:
+        default: false
+        internal: true
       http:
         tls:
           enabled: true

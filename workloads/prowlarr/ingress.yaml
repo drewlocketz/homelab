@@ -4,7 +4,7 @@ metadata:
   name: prowlarr
 spec:
   entryPoints:
-    - websecure
+    - websecure-internal
   routes:
     - match: Host(`prowlarr.home.drewdevlab.com`)
       kind: Rule

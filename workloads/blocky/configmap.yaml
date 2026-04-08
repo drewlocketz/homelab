@@ -30,15 +30,14 @@ data:
       customTTL: 1h
       filterUnmappedTypes: true
       mapping:
-        home.drewdevlab.com: 10.0.4.240
-        grafana.home.drewdevlab.com: 10.0.4.240
-        argocd.home.drewdevlab.com: 10.0.4.240
-        n8n.home.drewdevlab.com: 10.0.4.240
-        wg.home.drewdevlab.com: 10.0.4.240
-        prowlarr.home.drewdevlab.com: 10.0.4.240
-        radarr.home.drewdevlab.com: 10.0.4.240
-        sonarr.home.drewdevlab.com: 10.0.4.240
-        sabnzbd.home.drewdevlab.com: 10.0.4.240
+        home.drewdevlab.com: 10.0.4.243
+        grafana.home.drewdevlab.com: 10.0.4.243
+        n8n.home.drewdevlab.com: 10.0.4.243
+        wg.home.drewdevlab.com: 10.0.4.243
+        prowlarr.home.drewdevlab.com: 10.0.4.243
+        radarr.home.drewdevlab.com: 10.0.4.243
+        sonarr.home.drewdevlab.com: 10.0.4.243
+        sabnzbd.home.drewdevlab.com: 10.0.4.243
 
     ports:
       dns: 53
