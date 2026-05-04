@@ -10,7 +10,7 @@ Longhorn, media on Synology NFS, exposed via Traefik IngressRoute.
 
 **Author:** Drew Locketz
 **Date:** 2026-05-03
-**Status:** Draft
+**Status:** In Progress
 
 ---
 
@@ -46,14 +46,14 @@ Longhorn, media on Synology NFS, exposed via Traefik IngressRoute.
 
 ## Tasks
 
-- [ ] 1. Create `workloads/bazarr/` directory
-- [ ] 2. Create `deployment.yaml` — LinuxServer.io Bazarr image, mounting config and media volumes
-- [ ] 3. Create `service.yaml` — ClusterIP on port 6767
-- [ ] 4. Create `ingress.yaml` — IngressRoute for `bazarr.home.drewdevlab.com` on `websecure-internal` entrypoint
-- [ ] 5. Create `pvc-config.yaml` — Longhorn RWO, 5Gi
-- [ ] 6. Create `pv-media.yaml` and `pvc-media.yaml` — Synology NFS static PV (same shared media volume as Sonarr/Radarr)
-- [ ] 7. Create ArgoCD Application for `workloads/bazarr/` with `CreateNamespace=true` and auto-sync
-- [ ] 8. Verify pod is Running, PVCs bound, and web UI accessible
+- [x] 1. Create `workloads/bazarr/` directory
+- [x] 2. Create `deployment.yaml` — LinuxServer.io Bazarr image, mounting config and media volumes
+- [x] 3. Create `service.yaml` — ClusterIP on port 6767
+- [x] 4. Create `ingress.yaml` — IngressRoute for `bazarr.home.drewdevlab.com` on `websecure-internal` entrypoint
+- [x] 5. Create `pvc-config.yaml` — Longhorn RWO, 5Gi
+- [x] 6. Create `pv-media.yaml` and `pvc-media.yaml` — Synology NFS static PV (same shared media volume as Sonarr/Radarr)
+- [x] 7. ArgoCD ApplicationSet auto-discovered `workloads/bazarr/` — no manual Application needed
+- [x] 8. Verify pod is Running, PVCs bound, and web UI accessible
 
 ---
 
