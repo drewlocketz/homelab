@@ -16,14 +16,15 @@ traefik:
         spec:
           externalTrafficPolicy: Local
 
-  additionalArguments:
-    - "--entrypoints.websecure.http.middlewares=crowdsec-crowdsec-bouncer@kubernetescrd"
-
-  experimental:
-    plugins:
-      crowdsec-bouncer:
-        moduleName: "github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
-        version: "v1.5.1"
+  # CrowdSec bouncer disabled — re-enable once LAPI stability is resolved
+  # additionalArguments:
+  #   - "--entrypoints.websecure.http.middlewares=crowdsec-crowdsec-bouncer@kubernetescrd"
+  #
+  # experimental:
+  #   plugins:
+  #     crowdsec-bouncer:
+  #       moduleName: "github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
+  #       version: "v1.5.1"
 
   tlsStore:
     default:
