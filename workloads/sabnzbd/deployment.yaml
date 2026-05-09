@@ -20,7 +20,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: gluetun
-          image: qmcgaw/gluetun:latest
+          image: qmcgaw/gluetun:v3.41.1
           securityContext:
             capabilities:
               add:
@@ -36,12 +36,12 @@ spec:
                   name: sabnzbd-vpn
                   key: WIREGUARD_PRIVATE_KEY
             - name: SERVER_COUNTRIES
-              value: "Netherlands,Switzerland,Sweden"
+              value: "Netherlands"
           ports:
             - containerPort: 8080
               name: http
         - name: sabnzbd
-          image: lscr.io/linuxserver/sabnzbd:latest
+          image: lscr.io/linuxserver/sabnzbd:5.0.1-ls251
           resources:
             requests:
               cpu: "2"
