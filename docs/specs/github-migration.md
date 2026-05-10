@@ -79,15 +79,15 @@ These steps require manual action in the GitHub UI and cluster.
 - [x] 9. Add GitHub repo to ArgoCD: deploy key added via K8s secret `argocd-github-repo`
 - [x] 10. Update `clusters/home/infrastructure-appset.yaml` — changed repoURL to `git@github.com:drewlocketz/homelab.git`
 - [x] 11. Update `clusters/home/workloads-appset.yaml` — same repoURL change
-- [ ] 12. Configure ArgoCD webhook secret for GitHub push events
-- [ ] 13. Add GitHub webhook pointing to ArgoCD's webhook endpoint
+- [ ] ~~12. Configure ArgoCD webhook secret for GitHub push events~~ — skipped, using 3-min polling + manual `scripts/argocd-sync.sh`
+- [ ] ~~13. Add GitHub webhook pointing to ArgoCD's webhook endpoint~~ — skipped
 - [x] 14. Verify ArgoCD detects changes pushed to GitHub and syncs automatically
 
 ### Phase 4: Post-Migration
 
-- [ ] 15. Rotate K3s cluster token (old value is in git history)
-- [ ] 16. Rotate CrowdSec bouncer API key (old value is in git history)
-- [ ] 17. Verify all applications sync successfully from GitHub
+- [x] 15. Rotate K3s cluster token (old value is in git history) — rotated, updated on node-0 and node-1. Node-2 offline, needs manual update when back.
+- [x] 16. Rotate CrowdSec bouncer API key (old value is in git history) — new key sealed and committed
+- [x] 17. Verify all applications sync successfully from GitHub
 - [ ] 18. Test the full workflow: push to branch → open PR → merge → ArgoCD syncs
 
 > Agents: check off each task as it is completed.
