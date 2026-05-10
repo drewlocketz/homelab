@@ -53,8 +53,8 @@ These steps require manual action in the GitHub UI and cluster.
 
 ## Open Questions
 
-- [ ] GitHub repo name? (e.g. `drewdevlab/homelab`, `drew/homelab`)
-- [ ] ArgoCD auth method — deploy key (repo-scoped) or personal access token?
+- [x] GitHub repo name? → `drewlocketz/homelab`
+- [x] ArgoCD auth method → deploy key (repo-scoped)
 
 ---
 
@@ -69,9 +69,9 @@ These steps require manual action in the GitHub UI and cluster.
 
 ### Phase 2: Repository Setup
 
-- [ ] 5. Create public GitHub repository
-- [ ] 6. Add GitHub remote: `git remote add origin git@github.com:<owner>/homelab.git`
-- [ ] 7. Push all branches: `git push -u origin main`
+- [x] 5. Create public GitHub repository
+- [x] 6. Add GitHub remote: `git remote add origin git@github.com:drewlocketz/homelab.git`
+- [x] 7. Push all branches: `git push -u origin main`
 - [ ] 8. Configure branch protection on `main` (require PRs, no force push)
 
 ### Phase 3: ArgoCD Migration

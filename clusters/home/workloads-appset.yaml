@@ -6,7 +6,7 @@ metadata:
 spec:
   generators:
     - git:
-        repoURL: ssh://drew@10.0.4.37/home/drew/code/homelab
+        repoURL: git@github.com:drewlocketz/homelab.git
         revision: main
         directories:
           - path: workloads/*
@@ -17,7 +17,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: ssh://drew@10.0.4.37/home/drew/code/homelab
+        repoURL: git@github.com:drewlocketz/homelab.git
         targetRevision: main
         path: '{{path}}'
       destination:
