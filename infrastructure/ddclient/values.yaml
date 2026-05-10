@@ -1,6 +1,6 @@
 image:
   repository: lscr.io/linuxserver/ddclient
-  tag: "latest"
+  tag: "v4.0.0-ls222"
 
 env:
   TZ: America/Chicago
