@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice Automation — Business Review</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 0 20px;
+      line-height: 1.6;
+      color: #333;
+    }
+    h1 { color: #1a1a1a; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+    h2 { color: #2a2a2a; margin-top: 40px; }
+    h3 { color: #444; }
+    .sms-preview {
+      background: #e8f5e9;
+      border-left: 4px solid #4caf50;
+      padding: 16px 20px;
+      border-radius: 4px;
+      margin: 20px 0;
+      font-size: 15px;
+    }
+    .sms-preview strong { color: #1b5e20; }
+    .question-box {
+      background: #fff3e0;
+      border-left: 4px solid #ff9800;
+      padding: 16px 20px;
+      border-radius: 4px;
+      margin: 16px 0;
+    }
+    .future-box {
+      background: #f5f5f5;
+      border-left: 4px solid #9e9e9e;
+      padding: 16px 20px;
+      border-radius: 4px;
+      margin: 16px 0;
+    }
+    .step {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 16px 0;
+    }
+    .step-number {
+      display: inline-block;
+      background: #1976d2;
+      color: white;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 28px;
+      font-weight: bold;
+      font-size: 14px;
+      margin-right: 8px;
+    }
+    .arrow { text-align: center; font-size: 24px; color: #999; margin: 8px 0; }
+    ol li, ul li { margin-bottom: 8px; }
+    footer {
+      margin-top: 60px;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+      color: #888;
+      font-size: 14px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Invoice Automation</h1>
+  <p><strong>Purpose:</strong> We'd like your feedback on whether this workflow matches how invoices are actually handled today, and whether we're missing anything.</p>
+  <p><strong>What this is:</strong> A plan to automate invoice processing. Instead of manually reading invoices, categorizing them, and entering them into QuickBooks, most of that would happen automatically. You'd just review and approve via text message.</p>
+
+  <h2>How It Would Work</h2>
+
+  <div class="step">
+    <h3><span class="step-number">1</span> Invoices arrive by email</h3>
+    <p>Vendors send invoices (PDF or photo) to a dedicated email address (e.g. <strong>ap@yourdomain.com</strong>). This inbox is only for invoices — nothing else.</p>
+  </div>
+
+  <div class="arrow">&#8595;</div>
+
+  <div class="step">
+    <h3><span class="step-number">2</span> AI reads the invoice</h3>
+    <p>The system automatically reads the invoice and pulls out:</p>
+    <ul>
+      <li><strong>Vendor name</strong> (who sent it)</li>
+      <li><strong>Invoice number</strong></li>
+      <li><strong>Date</strong> and <strong>due date</strong></li>
+      <li><strong>Total amount</strong></li>
+      <li><strong>Line items</strong> (what was purchased)</li>
+      <li><strong>Expense category</strong> (matched against your existing QuickBooks categories)</li>
+    </ul>
+    <p>This works with both regular PDFs and photos/scans of paper invoices.</p>
+  </div>
+
+  <div class="arrow">&#8595;</div>
+
+  <div class="step">
+    <h3><span class="step-number">3</span> You get a text message for approval</h3>
+    <p>You'll receive a text like:</p>
+    <div class="sms-preview">
+      New invoice from <strong>ACME Supplies</strong><br>
+      Amount: <strong>$1,250.00</strong><br>
+      Date: 04/01/2026 / Due: 04/30/2026<br>
+      Category: <strong>Office Supplies</strong><br><br>
+      Reply <strong>YES</strong> to approve, <strong>NO</strong> to reject
+    </div>
+  </div>
+
+  <div class="arrow">&#8595;</div>
+
+  <div class="step">
+    <h3><span class="step-number">4</span> You reply, and it's handled</h3>
+    <p><strong>If you reply YES:</strong> The expense is automatically logged in QuickBooks with the vendor name, amount, date, category, and invoice number. You get a confirmation text.</p>
+    <p><strong>If you reply NO:</strong> The invoice is not logged. You get a confirmation text and can handle it manually.</p>
+  </div>
+
+  <h2>What We Need From You</h2>
+
+  <div class="question-box">
+    <strong>1. Does this match your current process?</strong>
+    <p>Are we missing any steps between receiving an invoice and logging it in QuickBooks?</p>
+  </div>
+
+  <div class="question-box">
+    <strong>2. Expense categories</strong>
+    <p>Can you share the list of expense categories you currently use in QuickBooks? The system needs this list to categorize invoices correctly.</p>
+  </div>
+
+  <div class="question-box">
+    <strong>3. Is the text message enough?</strong>
+    <p>Is the summary above (vendor, amount, date, due date, category) enough to decide whether to approve or reject? Would you want to see anything else?</p>
+  </div>
+
+  <div class="question-box">
+    <strong>4. Edge cases — do any of these apply?</strong>
+    <ul>
+      <li>Do you ever need to split an invoice across multiple categories?</li>
+      <li>Do invoices need to be assigned to a specific job or project?</li>
+      <li>Are there invoices that should be automatically approved (e.g. recurring monthly bills)?</li>
+      <li>Do you sometimes need to adjust the amount or add notes before approving?</li>
+      <li>What happens today if an invoice looks wrong or there's a dispute?</li>
+    </ul>
+  </div>
+
+  <div class="question-box">
+    <strong>5. Volume</strong>
+    <p>Roughly how many invoices come in per week or month?</p>
+  </div>
+
+  <h2>What This Doesn't Cover (Yet)</h2>
+
+  <div class="future-box">
+    <p>These could be added later if useful:</p>
+    <ul>
+      <li><strong>Bill pay / scheduling payments</strong> — this only logs the expense, it doesn't pay anything</li>
+      <li><strong>Duplicate detection</strong> — flagging if the same invoice comes in twice</li>
+      <li><strong>Monthly reports</strong> — summarizing what was approved or rejected</li>
+      <li><strong>Multiple approvers</strong> — right now it goes to one phone number</li>
+    </ul>
+  </div>
+
+  <footer>
+    Please reply with any feedback — no detail is too small. If something doesn't match how things actually work, we want to know.
+  </footer>
+
+</body>
+</html>

@@ -3,3 +3,7 @@
 extra_packages:
   - open-iscsi
   - nfs-common
+
+# Disable i915 GPU modesetting on headless servers to prevent
+# EDID polling spam and unnecessary CPU usage
+disable_i915_modesetting: true

@@ -23,7 +23,16 @@ This is a GitOps repository for managing a k3s homelab cluster using ArgoCD.
 ## Cluster
 
 - **Distribution**: k3s
-- **GitOps Tool**: ArgoCD
+- **GitOps Tool**: ArgoCD (local repo — no git remote)
+
+## ArgoCD Local Setup
+
+ArgoCD watches a **local git repo on the cluster**, not a remote like GitHub. This means:
+
+- There is **no git remote** — do not attempt `git push`
+- After committing changes, you must **manually trigger a sync** for ArgoCD to pick them up
+- Run `./scripts/argocd-sync.sh` to refresh all apps, or `./scripts/argocd-sync.sh <app-name>` for a specific one
+- Check sync status with `kubectl get applications -n argocd`
 
 ## Conventions
 
