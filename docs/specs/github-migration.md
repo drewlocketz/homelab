@@ -76,12 +76,12 @@ These steps require manual action in the GitHub UI and cluster.
 
 ### Phase 3: ArgoCD Migration
 
-- [ ] 9. Add GitHub repo to ArgoCD: `argocd repo add` with credentials
-- [ ] 10. Update `clusters/home/infrastructure-appset.yaml` — change `repoURL` from `ssh://drew@10.0.4.37/home/drew/code/homelab` to GitHub URL
-- [ ] 11. Update `clusters/home/workloads-appset.yaml` — same repoURL change
+- [x] 9. Add GitHub repo to ArgoCD: deploy key added via K8s secret `argocd-github-repo`
+- [x] 10. Update `clusters/home/infrastructure-appset.yaml` — changed repoURL to `git@github.com:drewlocketz/homelab.git`
+- [x] 11. Update `clusters/home/workloads-appset.yaml` — same repoURL change
 - [ ] 12. Configure ArgoCD webhook secret for GitHub push events
 - [ ] 13. Add GitHub webhook pointing to ArgoCD's webhook endpoint
-- [ ] 14. Verify ArgoCD detects changes pushed to GitHub and syncs automatically
+- [x] 14. Verify ArgoCD detects changes pushed to GitHub and syncs automatically
 
 ### Phase 4: Post-Migration
 
