@@ -9,7 +9,7 @@ spec:
       enabled: true
       crowdsecMode: stream
       crowdsecLapiHost: crowdsec-service.crowdsec.svc.cluster.local:8080
-      crowdsecLapiKey: "0MjzFJRWdyqa/GIvT47pXil67UhmRZ58l63TGBFGrkM"
+      crowdsecLapiKey: "REPLACED — value now in SealedSecret crowdsec-bouncer-key"
       crowdsecLapiScheme: http
       forwardedHeadersTrustedIps:
         - "10.42.0.0/16"

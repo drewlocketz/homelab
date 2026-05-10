@@ -1,0 +1,21 @@
+# Secrets and credentials
+*.key
+*.pem
+!bootstrap/sealed-secrets-pub-cert.pem
+.env
+secrets/
+
+# Ansible
+bootstrap/*.retry
+
+# OS / editor
+.DS_Store
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Helm
+charts/*/charts/
+charts/*/tmpcharts/
